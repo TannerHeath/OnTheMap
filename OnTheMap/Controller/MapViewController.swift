@@ -10,6 +10,7 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
 
+    //MARK: IBOutlets
     
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var mapView: MKMapView!
@@ -22,6 +23,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getPins()
     }
     
+    //MARK: IBActions
+    
+    //Deletes the current user session and dismisses to the login screen
     @IBAction func logoutButtonAction(_ sender: Any) {
         OTMClient.logout {
             DispatchQueue.main.async {
@@ -30,10 +34,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    //Refreshes map to display the most recent pins
     @IBAction func refreshButtonAction(_ sender: Any) {
         getPins()
     }
     
+    //MARK: GET Map Pins
+    
+    //Function removes current annotations, gets student locations, and adds the annotation
     func getPins() {
         self.annotations.removeAll()
         self.mapView.removeAnnotations(self.mapView.annotations)
@@ -63,6 +71,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
+    //MARK: mapView Functions
+    
+    //Checks to see if pin already exists. If not it creates a new instance.
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
        
         let reusedId = "pin"
@@ -80,6 +91,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         return pinView!
     }
     
+    //Handles the accessoryView when the pin is tapped and opens the link that iis submitted
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             if let toOpen = view.annotation?.subtitle {

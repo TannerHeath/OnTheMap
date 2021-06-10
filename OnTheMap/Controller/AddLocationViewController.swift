@@ -10,6 +10,7 @@ import MapKit
 
 class AddLocationViewController: UIViewController, UITextFieldDelegate {
 
+    //MARK: IBOutlets
     
     @IBOutlet weak var findLocationButton: UIButton!
     @IBOutlet weak var locationTextField: UITextField!
@@ -19,25 +20,27 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
     var objectId: String?
     
+    //Sets textField delegates
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTextField.delegate = self
         websiteTextField.delegate = self
     }
     
+    //Sets activityIndicator state
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         activityIndicator.isHidden = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-    }
+    //MARK: IBActions
     
+    //Dismisses the current view when back button is pressed
     @IBAction func backButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
+    //Stages location and link to be submitted
     @IBAction func findLocation(_ sender: Any) {
         activityIndicatorAnimation(animating: true)
         
@@ -52,6 +55,9 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         geocodeLocation(newLocation: newLocation ?? "")
     }
     
+    //MARK: Functions
+    
+    //Geocodes the location submitted
     private func geocodeLocation (newLocation: String) {
         CLGeocoder().geocodeAddressString(newLocation) { (marker, error) in
             if let error = error {
@@ -74,12 +80,14 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //Loads location with student information
     private func loadNewLocation(_ coordinate: CLLocationCoordinate2D) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "LoadLocationVC") as! LoadLocationViewController
         controller.studentInformation = buildStudentInfo(coordinate)
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
+    //Creates an instance of StudentInformation
     private func buildStudentInfo(_ coordinate: CLLocationCoordinate2D) -> StudentInformation {
 
         var studentInfo = [
@@ -100,11 +108,13 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
 
     }
     
+    //Handles return button on keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
+    //Handles activityIndicator animation
     private func activityIndicatorAnimation(animating: Bool) {
         if animating == true {
             activityIndicator.isHidden = false

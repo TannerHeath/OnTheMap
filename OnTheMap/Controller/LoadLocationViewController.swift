@@ -11,6 +11,9 @@ import MapKit
 class LoadLocationViewController: UIViewController {
 
     var studentInformation: StudentInformation?
+    
+    //MARK: IBOutlets
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var addLocationButton: UIButton!
     
@@ -34,6 +37,9 @@ class LoadLocationViewController: UIViewController {
         
     }
     
+    //MARK: IBActions
+    
+    //Adds or updates location to mapView when button is pressed
     @IBAction func addLocationButton(_ sender: Any) {
         if let studentLocation = studentInformation {
             if OTMClient.Auth.objectId == "" {
@@ -73,7 +79,7 @@ class LoadLocationViewController: UIViewController {
         }
     }
     
-    
+    //Creates annotaion for location
     private func showLocations(location: Location) {
         mapView.removeAnnotations(mapView.annotations)
         if let coordinate = getCoordinate(location: location) {
@@ -86,6 +92,8 @@ class LoadLocationViewController: UIViewController {
         }
     }
 
+    //Gets student latitude and longitude
+    
     private func getCoordinate(location: Location) -> CLLocationCoordinate2D?{
         if let lat = location.latitude, let lon = location.longitude {
             return CLLocationCoordinate2DMake(lat,lon)
